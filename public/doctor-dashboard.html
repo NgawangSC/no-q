@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="window.location.href='/'">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less</span>
+                </div>
+                <div class="header-actions">
+                    <button id="logoutBtn" class="logout-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button id="refreshBtn" class="refresh-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 2V8M21 8H15M21 8L18 5.5C16.5 4 14.5 3 12 3C7 3 3 7 3 12C3 17 7 21 12 21C16 21 19.5 18.5 21 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Current Token Card -->
+            <div class="current-token-card">
+                <!-- Blue Header -->
+                <div class="token-header">
+                    <h1 class="token-title">Clear Current Token</h1>
+                    <p class="token-subtitle">Mark the current patient as completed and advance the queue</p>
+                    <div class="token-number-display">
+                        <span class="token-label">Token Number:</span>
+                        <span id="currentToken" class="token-value">-</span>
+                    </div>
+                </div>
+
+                <!-- Patient Information -->
+                <div id="patientInfo" class="patient-info-section">
+                    <h2 class="info-section-title">Your Information</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">NAME</span>
+                            <span id="patientName" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CID</span>
+                            <span id="patientCID" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">DOB</span>
+                            <span id="patientDOB" class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">AGE</span>
+                            <span id="patientAge" class="info-value">-</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <span class="info-label">CHIEF COMPLAINT</span>
+                            <span id="patientComplaint" class="info-value">-</span>
+                        </div>
+                    </div>
+                    <button id="clearTokenBtn" class="clear-token-button">Clear Token</button>
+                </div>
+
+                <!-- No Patient State -->
+                <div id="noPatient" class="no-patient-state" style="display: none;">
+                    <p class="no-patient-text">No patient currently assigned</p>
+                </div>
+            </div>
+
+            <!-- Queue Overview -->
+            <div class="queue-overview">
+                <h2 class="overview-title">Queue Overview</h2>
+                <p class="overview-subtitle">Current status of your chamber</p>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-icon location-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-label">Location</span>
+                            <span id="chamberLocation" class="overview-value">Chamber No: -</span>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="overview-icon time-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-label">Expected Time</span>
+                            <span id="expectedTime" class="overview-value">- Minutes</span>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="overview-icon token-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-label">Token</span>
+                            <span id="tokenNo" class="overview-value">Token No: -</span>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="overview-icon waiting-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="overview-content">
+                            <span class="overview-label">Waiting</span>
+                            <span id="waitingCount" class="overview-value">- people</span>
+                        </div>
+                    </div>
+                </div>
+                <p id="lastUpdated" class="last-updated">Last Updated 9:15 a.m</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+    </footer>
+
+    <script src="/scripts/doctor-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="window.location.href='/'">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less</span>
+                </div>
+                <div class="header-actions">
+                    <button onclick="window.location.href='/notifications'" class="notification-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="notification-badge">4</span>
+                    </button>
+                    <button id="refreshBtn" class="refresh-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 2V8M21 8H15M21 8L18 5.5C16.5 4 14.5 3 12 3C7 3 3 7 3 12C3 17 7 21 12 21C16 21 19.5 18.5 21 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <h1 id="welcomeMessage" class="welcome-title">Welcome, Patient</h1>
+                <p class="welcome-subtitle">Your appointment details</p>
+            </div>
+
+            <!-- No Token State -->
+            <div id="noTokenState" class="no-token-state">
+                <div class="no-token-message">You have no token registered</div>
+                <button onclick="window.location.href='/patient-register'" class="register-new-btn">Register for Queue</button>
+            </div>
+
+            <!-- Token Status (Hidden by default) -->
+            <div id="tokenStatus" class="token-status-card" style="display: none;">
+                <!-- Will be populated dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+    </footer>
+
+    <script src="/scripts/patient-dashboard.js"></script>
+</body>
+</html>

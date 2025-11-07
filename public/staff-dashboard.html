@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less</span>
+                </div>
+                <div class="header-actions">
+                    <span id="staffName" class="staff-name"></span>
+                    <span id="staffRole" class="staff-role"></span>
+                    <!-- Add analytics button -->
+                    <button onclick="window.location.href='/analytics'" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3V21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 9L13 14L9 10L3 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Analytics
+                    </button>
+                    <button id="logoutBtn" class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon waiting">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="waitingCount">0</h3>
+                        <p class="stat-label">Waiting</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon in-progress">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="inProgressCount">0</h3>
+                        <p class="stat-label">In Progress</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="completedCount">0</h3>
+                        <p class="stat-label">Completed Today</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon avg-time">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="avgWaitTime">0</h3>
+                        <p class="stat-label">Avg Wait (min)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receptionist Section -->
+            <div id="receptionistSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Add New Patient</h2>
+                </div>
+                <div class="add-patient-card">
+                    <form id="addPatientForm" class="add-patient-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patientName" class="form-label">Patient Name</label>
+                                <input type="text" id="patientName" class="form-input" placeholder="Enter patient name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="patientCID" class="form-label">CID Number</label>
+                                <input type="text" id="patientCID" class="form-input" placeholder="Enter CID number" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patientPhone" class="form-label">Phone Number</label>
+                                <input type="tel" id="patientPhone" class="form-input" placeholder="Enter phone number" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="patientReason" class="form-label">Reason for Visit</label>
+                                <input type="text" id="patientReason" class="form-input" placeholder="Enter reason" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add to Queue</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Doctor Section -->
+            <div id="doctorSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Current Patient</h2>
+                    <button id="callNextBtn" class="btn btn-primary">Call Next Patient</button>
+                </div>
+                <div id="currentPatientCard" class="current-patient-card" style="display: none;">
+                    <div class="patient-info">
+                        <h3 id="currentPatientName" class="patient-name"></h3>
+                        <p id="currentPatientDetails" class="patient-details"></p>
+                    </div>
+                    <button id="completeBtn" class="btn btn-success">Mark as Completed</button>
+                </div>
+                <div id="noPatientMessage" class="no-patient-message">
+                    <p>No patient currently assigned. Click "Call Next Patient" to begin.</p>
+                </div>
+            </div>
+
+            <!-- Queue List -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Queue List</h2>
+                    <button id="refreshBtn" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 2V8M21 8H15M21 8L18 5.5C16.5 4 14.5 3 12 3C7 3 3 7 3 12C3 17 7 21 12 21C16 21 19.5 18.5 21 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="queue-table-container">
+                    <table class="queue-table">
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>CID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                                <th>Wait Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="queueTableBody">
+                            <tr>
+                                <td colspan="8" class="no-data">Loading queue...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/scripts/staff-dashboard.js"></script>
+</body>
+</html>

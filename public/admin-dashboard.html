@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="window.location.href='/'">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero" style="margin-bottom: 1.5rem;">
+                <h1 class="hero-title">Admin Portal</h1>
+                <p class="hero-subtitle">Create staff accounts for Receptionists and Doctors</p>
+            </section>
+
+            <section class="portals" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                <div class="portal-card">
+                    <h2 class="portal-title">Create Staff User</h2>
+                    <p class="portal-description">Fill the form to add a new staff member</p>
+                    <form id="staffForm" class="portal-form" style="display: grid; gap: 0.75rem;">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username (CID or Staff ID)</label>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="e.g. doctor1" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-input" placeholder="password123" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Dr. Sonam Wangchuk" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="name@example.com" />
+                        </div>
+                        <div class="form-group">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" name="role" class="form-input" required>
+                                <option value="">Select role</option>
+                                <option value="receptionist">Receptionist</option>
+                                <option value="doctor">Doctor</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="portal-button staff-button">Create Staff</button>
+                    </form>
+
+                    <div id="result" class="info-box" style="display:none; margin-top: 1rem;">
+                        <div class="info-content">
+                            <h3 class="info-title" id="resultTitle"></h3>
+                            <p class="info-text" id="resultText"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card">
+                    <h2 class="portal-title">Existing Staff</h2>
+                    <p class="portal-description">Active staff users</p>
+                    <div id="staffList" class="info-boxes"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">© 2025 Q-Less. Admin</p>
+    </footer>
+
+    <script src="/scripts/admin-dashboard.js"></script>
+</body>
+</html>
+

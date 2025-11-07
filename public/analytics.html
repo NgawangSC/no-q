@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="stylesheet" href="/styles/analytics.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less</span>
+                </div>
+                <div class="header-actions">
+                    <button onclick="window.location.href='/staff-dashboard'" class="btn btn-secondary">Back to Dashboard</button>
+                    <button id="logoutBtn" class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="analytics-header">
+                <h1 class="page-title">Analytics Dashboard</h1>
+                <div class="date-filter">
+                    <label for="startDate">From:</label>
+                    <input type="date" id="startDate" class="date-input">
+                    <label for="endDate">To:</label>
+                    <input type="date" id="endDate" class="date-input">
+                    <button id="applyFilter" class="btn btn-primary">Apply</button>
+                </div>
+            </div>
+
+            <!-- Overview Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dbeafe; color: #3b82f6;">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="totalPatients">0</h3>
+                        <p class="stat-label">Total Patients</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="completedPatients">0</h3>
+                        <p class="stat-label">Completed</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef3c7; color: #f59e0b;">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="avgWaitTime">0</h3>
+                        <p class="stat-label">Avg Wait (min)</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e0e7ff; color: #6366f1;">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="completionRate">0%</h3>
+                        <p class="stat-label">Completion Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">Daily Patient Volume</h3>
+                    <canvas id="dailyChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-title">Peak Hours</h3>
+                    <canvas id="hourlyChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-title">Average Wait Time by Hour</h3>
+                    <canvas id="waitTimeChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-title">Status Distribution</h3>
+                    <div id="statusChart" class="pie-chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/scripts/analytics.js"></script>
+</body>
+</html>

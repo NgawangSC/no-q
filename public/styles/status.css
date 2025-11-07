@@ -1,0 +1,358 @@
+/* Patient Status Page Styles */
+
+.status-main {
+  padding: 2rem 0 4rem;
+  min-height: calc(100vh - 200px);
+}
+
+.status-card {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Status Header */
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.status-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-button:hover {
+  background-color: #e5e7eb;
+}
+
+.refresh-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f3f4f6;
+  border-top-color: #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-state p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Patient Info Card */
+.patient-info-card {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.info-row:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.info-value {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.queue-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.status-waiting {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-in-progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Queue Position Card */
+.queue-position-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f0fdf4;
+  border: 2px solid #bbf7d0;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.position-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+}
+
+.position-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+.position-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.25rem;
+}
+
+.position-text {
+  font-size: 1rem;
+  color: #166534;
+  font-weight: 500;
+}
+
+/* Wait Time Card */
+.wait-time-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.wait-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.wait-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.wait-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+/* Additional Info */
+.additional-info {
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+.info-item:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.info-item-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.info-item-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Instructions Card */
+.instructions-card {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.instructions-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.75rem;
+}
+
+.instructions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instructions-list li {
+  font-size: 0.875rem;
+  color: #1e40af;
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.instructions-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  font-weight: 700;
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.error-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.error-message {
+  font-size: 1rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.retry-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retry-button:hover {
+  background-color: #059669;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .status-card {
+    margin: 0 1rem;
+    padding: 1.5rem;
+  }
+
+  .status-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .status-title {
+    font-size: 1.5rem;
+  }
+
+  .position-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .position-number {
+    font-size: 2.5rem;
+  }
+
+  .wait-time {
+    font-size: 1.25rem;
+  }
+}

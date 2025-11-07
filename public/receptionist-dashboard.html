@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Dashboard - Q-Less</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="window.location.href='/'">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                    </svg>
+                    <span class="logo-text">Q-Less</span>
+                </div>
+                <div class="header-actions">
+                    <button id="logoutBtn" class="logout-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Registration Form Card -->
+            <div class="registration-card">
+                <!-- Blue Header -->
+                <div class="registration-header">
+                    <div class="registration-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+                            <path d="M12 8v8M8 12h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h1 class="registration-title">Clear Current Token</h1>
+                    <p class="registration-subtitle">Enter patient details to assign token and chamber</p>
+                </div>
+
+                <!-- Form -->
+                <form id="registrationForm" class="registration-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cidNumber" class="form-label">CID Number</label>
+                            <input type="text" id="cidNumber" class="form-input" placeholder="Enter CID Number" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" class="form-input" placeholder="Enter Name" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" id="age" class="form-input" placeholder="Enter Age" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="form-label">Gender</label>
+                            <input type="text" id="gender" class="form-input" placeholder="Enter Gender" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" id="dob" class="form-input" placeholder="Enter DOB" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="complaint" class="form-label">Chief Complaint</label>
+                            <input type="text" id="complaint" class="form-input" placeholder="Reason, Sickness, Disease, Check Ups" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tokenNumber" class="form-label">Token Number</label>
+                            <select id="tokenNumber" class="form-select" required>
+                                <option value="" disabled selected>Select Chamber</option>
+                                <option value="1">Token 1</option>
+                                <option value="2">Token 2</option>
+                                <option value="3">Token 3</option>
+                                <option value="4">Token 4</option>
+                                <option value="5">Token 5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="chamber" class="form-label">Chamber Assignment</label>
+                            <select id="chamber" class="form-select" required>
+                                <option value="" disabled selected>Select Chamber</option>
+                                <option value="1">Chamber 1</option>
+                                <option value="2">Chamber 2</option>
+                                <option value="3">Chamber 3</option>
+                                <option value="4">Chamber 4</option>
+                                <option value="5">Chamber 5</option>
+                                <option value="6">Chamber 6</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="register-button">Register Patient</button>
+                </form>
+            </div>
+
+            <!-- Recent Registrations -->
+            <div class="recent-registrations">
+                <div class="section-header-with-icon">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h2 class="section-title">Recent Registrations</h2>
+                        <p class="section-subtitle">Recently registered patients</p>
+                    </div>
+                </div>
+                <div id="recentList" class="recent-list">
+                    <div class="empty-state">
+                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p class="empty-text">No patients registered yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#3B82F6"/>
+                    <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="modal-title">Patient Registration Successful</h2>
+            <button id="continueBtn" class="modal-button">Continue</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+    </footer>
+
+    <script src="/scripts/receptionist-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-Less - Healthcare Queue Management</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
+                    <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                </svg>
+                <span class="logo-text">Q-Less</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1 class="hero-title">
+                    Welcome to <span class="highlight">Q-Less</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Experience seamless healthcare queue management<br>
+                    with real-time updates and zero waiting room hassle
+                </p>
+            </section>
+
+            <!-- Portal Cards -->
+            <section class="portals">
+                <!-- Patient Portal Card -->
+                <div class="portal-card">
+                    <div class="portal-icon patient-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="16" y="12" width="32" height="40" rx="4" fill="#10B981"/>
+                            <rect x="28" y="20" width="8" height="2" fill="white"/>
+                            <rect x="24" y="26" width="2" height="8" fill="white"/>
+                            <rect x="28" y="26" width="8" height="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <h2 class="portal-title">Patient Portal</h2>
+                    <p class="portal-description">
+                        Check your queue status<br>
+                        and waiting time in real-time
+                    </p>
+                    <ul class="portal-features">
+                        <li>Real-time queue updates</li>
+                        <li>Estimated waiting time</li>
+                        <li>Mobile notifications</li>
+                    </ul>
+                    <button class="portal-button patient-button" onclick="window.location.href='/patient'">
+                        <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" fill="currentColor"/>
+                        </svg>
+                        Enter as Patient
+                    </button>
+                </div>
+
+                <!-- Staff Portal Card -->
+                <div class="portal-card">
+                    <div class="portal-icon staff-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="20" r="8" fill="#3B82F6"/>
+                            <path d="M20 44c0-6.627 5.373-12 12-12s12 5.373 12 12v4H20v-4z" fill="#3B82F6"/>
+                            <circle cx="48" cy="24" r="6" fill="#60A5FA"/>
+                            <path d="M40 44c0-4.418 3.582-8 8-8s8 3.582 8 8v2H40v-2z" fill="#60A5FA"/>
+                        </svg>
+                    </div>
+                    <h2 class="portal-title">Staff Portal</h2>
+                    <p class="portal-description">
+                        Receptionist and Doctor Login Portal
+                    </p>
+                    <ul class="portal-features">
+                        <li>Manage patient queues</li>
+                        <li>Call next patient</li>
+                        <li>View analytics dashboard</li>
+                    </ul>
+                    <button class="portal-button staff-button" onclick="window.location.href='/staff'">
+                        <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Staff Login
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+    </footer>
+
+    <script src="/scripts/main.js"></script>
+</body>
+</html>

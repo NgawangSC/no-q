@@ -167,6 +167,8 @@ body {
   justify-content: center;
   gap: 0.5rem;
   color: white;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .button-icon {

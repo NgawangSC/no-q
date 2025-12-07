@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Queue Status - Q-Less</title>
+    <title>Queue Status - No-Q</title>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/portal.css">
     <link rel="stylesheet" href="/styles/status.css">
@@ -23,7 +23,7 @@
                         <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
                         <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
                     </svg>
-                    <span class="logo-text">Q-Less</span>
+                    <span class="logo-text">No-Q</span>
                 </div>
             </div>
         </div>
@@ -64,8 +64,24 @@
                             <span id="patientCid" class="info-value">-</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Queue Number:</span>
-                            <span id="queueNumber" class="info-value queue-number">-</span>
+                            <span class="info-label">Token Number:</span>
+                            <span id="tokenNumber" class="info-value token-number">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Chamber:</span>
+                            <span id="patientChamber" class="info-value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Doctor:</span>
+                            <span id="patientDoctor" class="info-value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Specialization:</span>
+                            <span id="patientSpecialization" class="info-value">-</span>
+                        </div>
+                        <div class="info-row" id="peopleAheadRow" style="display: none;">
+                            <span class="info-label">People Ahead:</span>
+                            <span id="peopleAhead" class="info-value">-</span>
                         </div>
                     </div>
 
@@ -102,24 +118,48 @@
                             <span id="visitReason" class="info-item-value">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-item-label">Priority:</span>
-                            <span id="priorityLevel" class="info-item-value">-</span>
+                            <span class="info-item-label">Registered At:</span>
+                            <span id="registeredTime" class="info-item-value">-</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-item-label">Joined At:</span>
-                            <span id="joinedTime" class="info-item-value">-</span>
+                        <div class="info-item" id="doctorInfo" style="display: none;">
+                            <span class="info-item-label">Doctor:</span>
+                            <span id="doctorName" class="info-item-value">-</span>
+                        </div>
+                        <div class="info-item" id="prescriptionInfo" style="display: none;">
+                            <span class="info-item-label">Prescription:</span>
+                            <div id="prescriptionText" class="info-item-value" style="white-space: pre-wrap; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; margin-top: 5px;">-</div>
                         </div>
                     </div>
 
-                    <!-- Instructions -->
-                    <div class="instructions-card">
-                        <h3 class="instructions-title">What to do next:</h3>
-                        <ul class="instructions-list">
-                            <li>Keep this page open for real-time updates</li>
-                            <li>You will be notified when it's your turn</li>
-                            <li>Please arrive at the reception when called</li>
-                        </ul>
+                <!-- Notification Banner (Hidden by default) -->
+                <div id="notificationBanner" class="notification-banner" style="display: none;">
+                    <div class="notification-content">
+                        <svg class="notification-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                        </svg>
+                        <div class="notification-text">
+                            <h4 id="notificationTitle" class="notification-title">It's Your Turn!</h4>
+                            <p id="notificationMessage" class="notification-message">Please proceed to the reception.</p>
+                        </div>
+                        <button id="dismissNotification" class="notification-dismiss" aria-label="Dismiss notification">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
                     </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="instructions-card">
+                    <h3 class="instructions-title">What to do next:</h3>
+                    <ul class="instructions-list">
+                        <li>Keep this page open for real-time updates</li>
+                        <li>You will be notified when it's your turn</li>
+                        <li>Please arrive at the reception when called</li>
+                    </ul>
+                </div>
                 </div>
 
                 <!-- Error State -->
@@ -137,9 +177,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+        <p class="footer-text">© 2025 No-Q. All Rights Reserved.</p>
     </footer>
 
+    <!-- Correct flat scripts path -->
     <script src="/scripts/patient-status.js"></script>
 </body>
 </html>

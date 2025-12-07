@@ -3,9 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal - Q-Less</title>
+    <title>Admin Portal - No-Q</title>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="stylesheet" href="/styles/admin-dashboard.css">
+    <style>
+        /* Staff Grid Layout */
+        #staffList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 10px 0;
+        }
+        
+        .staff-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease both;
+        }
+        
+        .staff-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .staff-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .staff-name-role {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .staff-icon {
+            font-size: 28px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f3f4f6;
+        }
+        
+        .staff-info h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .role-badge.doctor {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .role-badge.receptionist {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .role-badge.admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .staff-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .staff-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .staff-detail-item strong {
+            color: #374151;
+            min-width: 80px;
+        }
+        
+        .doctor-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #staffList {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .staff-card {
+                padding: 16px;
+            }
+            
+            .staff-name-role {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -21,7 +176,15 @@
                         <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
                         <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
                     </svg>
-                    <span class="logo-text">Q-Less Admin</span>
+                    <span class="logo-text">No-Q Admin</span>
+                </div>
+                <div class="header-actions">
+                    <button id="logoutBtn" class="logout-btn" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -29,23 +192,27 @@
 
     <main class="main">
         <div class="container">
-            <section class="hero" style="margin-bottom: 1.5rem;">
+            <section class="hero">
                 <h1 class="hero-title">Admin Portal</h1>
                 <p class="hero-subtitle">Create staff accounts for Receptionists and Doctors</p>
             </section>
 
-            <section class="portals" style="grid-template-columns: 1fr; gap: 1.5rem;">
+            <section class="portals">
+                <!-- Staff Creation Card -->
                 <div class="portal-card">
-                    <h2 class="portal-title">Create Staff User</h2>
+                    <h2 class="portal-title" id="staffFormTitle">Create Staff User</h2>
                     <p class="portal-description">Fill the form to add a new staff member</p>
-                    <form id="staffForm" class="portal-form" style="display: grid; gap: 0.75rem;">
+                    <p class="portal-description" id="staffFormEditHint" style="display:none; font-size:0.85rem; color:#6b7280;">Editing existing staff</p>
+                    <form id="staffForm" class="portal-form">
+                        <input type="hidden" id="editingStaffId" value="">
                         <div class="form-group">
-                            <label for="username" class="form-label">Username (CID or Staff ID)</label>
-                            <input type="text" id="username" name="username" class="form-input" placeholder="e.g. doctor1" required />
+                            <label for="cid" class="form-label">CID (Staff ID Number)</label>
+                            <input type="text" id="cid" name="cid" class="form-input" placeholder="e.g. 1001" required />
                         </div>
                         <div class="form-group">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" id="password" name="password" class="form-input" placeholder="password123" required />
+                            <input type="password" id="password" name="password" class="form-input" placeholder="password123" />
+                            <small id="passwordHint" style="color: #6b7280; font-size: 12px; display: none;">Leave blank to keep current password when editing</small>
                         </div>
                         <div class="form-group">
                             <label for="name" class="form-label">Full Name</label>
@@ -61,12 +228,37 @@
                                 <option value="">Select role</option>
                                 <option value="receptionist">Receptionist</option>
                                 <option value="doctor">Doctor</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
-                        <button type="submit" class="portal-button staff-button">Create Staff</button>
+                        <div class="form-group">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" name="status" class="form-input">
+                                <option value="active" selected>Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Doctor-specific fields -->
+                        <div id="doctorFields" class="doctor-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="specialization" class="form-label">Specialization</label>
+                                <select id="specialization" name="specialization" class="form-input">
+                                    <option value="">Select specialization</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="chamber" class="form-label">Chamber</label>
+                                <select id="chamber" name="chamber" class="form-input">
+                                    <option value="">Select chamber</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="portal-button staff-button" id="staffSubmitBtn">Create Staff</button>
+                        <button type="button" class="portal-button" id="staffCancelEditBtn" style="display:none; margin-left:0.5rem; background:transparent; color:#0d9488; border:1px solid #0d9488;">Cancel Edit</button>
                     </form>
 
-                    <div id="result" class="info-box" style="display:none; margin-top: 1rem;">
+                    <div id="result" class="info-box" style="display:none;">
                         <div class="info-content">
                             <h3 class="info-title" id="resultTitle"></h3>
                             <p class="info-text" id="resultText"></p>
@@ -74,20 +266,45 @@
                     </div>
                 </div>
 
+                <!-- Staff List Card -->
                 <div class="portal-card">
                     <h2 class="portal-title">Existing Staff</h2>
                     <p class="portal-description">Active staff users</p>
-                    <div id="staffList" class="info-boxes"></div>
+                    <div id="staffList"></div>
+                </div>
+            </section>
+
+            <!-- Management Section -->
+            <section class="management-section">
+                <div class="portal-card">
+                    <h2 class="portal-title">Doctor Management</h2>
+                    <p class="portal-description">Manage doctor profiles, specializations and chambers</p>
+                    <div class="management-links">
+                        <a href="/specializations-management" class="management-link">
+                            <div class="link-icon">🏥</div>
+                            <div class="link-content">
+                                <h3 class="link-title">Specializations &amp; Chambers</h3>
+                                <p class="link-description">Manage medical specializations, chambers and assignments</p>
+                            </div>
+                        </a>
+
+                        <a href="/doctor-profile-management" class="management-link">
+                            <div class="link-icon">👨‍⚕️</div>
+                            <div class="link-content">
+                                <h3 class="link-title">Doctor Profiles</h3>
+                                <p class="link-description">Assign specialization and chamber to each doctor</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>
     </main>
 
     <footer class="footer">
-        <p class="footer-text">© 2025 Q-Less. Admin</p>
+        <p class="footer-text"> 2025 No-Q. Admin</p>
     </footer>
 
     <script src="/scripts/admin-dashboard.js"></script>
 </body>
 </html>
-

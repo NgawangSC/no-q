@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Q-Less</title>
+    <title>Patient Registration - No-Q</title>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/portal.css">
+    <link rel="stylesheet" href="/styles/patient-register.css">
 </head>
 <body>
     <!-- Header -->
@@ -14,15 +15,15 @@
             <div class="header-content">
                 <button class="back-button" onclick="window.location.href='/patient'">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
                 <div class="logo">
                     <svg class="logo-icon" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
-                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
+                        <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488" />
+                        <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6" />
                     </svg>
-                    <span class="logo-text">Q-Less</span>
+                    <span class="logo-text">No-Q</span>
                 </div>
             </div>
         </div>
@@ -31,85 +32,110 @@
     <!-- Main Content -->
     <main class="main portal-main">
         <div class="container">
-            <div class="portal-form-card">
-                <!-- Green Header Section -->
-                <div class="portal-header patient-header">
-                    <div class="portal-header-icon">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="9" cy="7" r="4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="19" y1="8" x2="19" y2="14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="22" y1="11" x2="16" y2="11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+            <div class="patient-register-card">
+
+                <!-- Header -->
+                <div class="patient-register-header">
+                    <div class="patient-register-header-content">
+                        <div class="patient-register-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <h1 class="patient-register-title">Patient Registration</h1>
+                        <p class="patient-register-subtitle">Join the queue for medical consultation</p>
                     </div>
-                    <h1 class="portal-header-title">Register for Queue</h1>
-                    <p class="portal-header-subtitle">Fill in your details to join the queue</p>
                 </div>
 
-                <!-- Form Section -->
-                <div class="portal-form-content">
-                    <form id="registerForm" class="portal-form">
-                        <div class="form-group">
-                            <label for="cid" class="form-label">CID Number</label>
-                            <input 
-                                type="text" 
-                                id="cid" 
-                                name="cid" 
-                                class="form-input" 
-                                placeholder="Enter your CID Number"
-                                required
-                            />
+                <!-- Form -->
+                <div class="patient-register-form">
+                    <div id="messageContainer"></div>
+
+                    <form id="registerForm" class="patient-form">
+                        <div class="patient-form-grid">
+
+                            <div class="patient-form-group">
+                                <label class="patient-form-label">CID Number <span class="required">*</span></label>
+                                <input
+                                    type="text"
+                                    id="cid"
+                                    name="cid"
+                                    class="patient-form-input"
+                                    placeholder="Enter your CID Number"
+                                    pattern="[0-9]+"
+                                    required
+                                />
+                            </div>
+
+                            <div class="patient-form-group">
+                                <label class="patient-form-label">Full Name <span class="required">*</span></label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    class="patient-form-input"
+                                    placeholder="Enter your full name"
+                                    required
+                                />
+                            </div>
+
+                            <div class="patient-form-group">
+                                <label class="patient-form-label">Phone Number <span class="required">*</span></label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="patient-form-input"
+                                    placeholder="Enter your phone number"
+                                    pattern="[0-9+()\\-\\s]+"
+                                    required
+                                />
+                            </div>
+
+                            <div class="patient-form-group">
+                                <label class="patient-form-label">Reason for Visit <span class="required">*</span></label>
+                                <select id="reason" name="reason" class="patient-form-select" required>
+                                    <option value="" disabled selected>Select reason for visit</option>
+                                    <option value="General Consultation">General Consultation</option>
+                                    <option value="Follow-up">Follow-up</option>
+                                    <option value="Emergency">Emergency</option>
+                                    <option value="Vaccination">Vaccination</option>
+                                    <option value="Lab Tests">Lab Tests</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Priority Selection -->
+                            <div class="patient-form-group full-width">
+                                <label class="patient-form-label">Priority Level <span class="required">*</span></label>
+
+                                <div class="priority-group">
+                                    <div class="priority-option">
+                                        <input type="radio" id="priority-normal" name="priority" value="normal" checked />
+                                        <label for="priority-normal" class="priority-label normal">Normal</label>
+                                    </div>
+                                    <div class="priority-option">
+                                        <input type="radio" id="priority-urgent" name="priority" value="urgent" />
+                                        <label for="priority-urgent" class="priority-label urgent">Urgent</label>
+                                    </div>
+                                    <div class="priority-option">
+                                        <input type="radio" id="priority-emergency" name="priority" value="emergency" />
+                                        <label for="priority-emergency" class="priority-label emergency">Emergency</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input 
-                                type="text" 
-                                id="name" 
-                                name="name" 
-                                class="form-input" 
-                                placeholder="Enter your full name"
-                                required
-                            />
+                        <!-- Submit -->
+                        <div class="patient-submit-container">
+                            <button type="submit" class="patient-submit" id="submitBtn">
+                                <span class="btn-text">Join Queue</span>
+                            </button>
                         </div>
 
-                        <div class="form-group">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input 
-                                type="tel" 
-                                id="phone" 
-                                name="phone" 
-                                class="form-input" 
-                                placeholder="Enter your phone number"
-                                required
-                            />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reason" class="form-label">Reason for Visit</label>
-                            <select id="reason" name="reason" class="form-select" required>
-                                <option value="" disabled selected>Select reason for visit</option>
-                                <option value="General Consultation">General Consultation</option>
-                                <option value="Follow-up">Follow-up</option>
-                                <option value="Emergency">Emergency</option>
-                                <option value="Vaccination">Vaccination</option>
-                                <option value="Lab Tests">Lab Tests</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="priority" class="form-label">Priority Level</label>
-                            <select id="priority" name="priority" class="form-select" required>
-                                <option value="normal" selected>Normal</option>
-                                <option value="urgent">Urgent</option>
-                                <option value="emergency">Emergency</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="form-submit-button patient-submit">
-                            Join Queue
-                        </button>
                     </form>
                 </div>
             </div>
@@ -118,7 +144,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+        <p class="footer-text"> 2025 No-Q. All Rights Reserved.</p>
     </footer>
 
     <script src="/scripts/patient-register.js"></script>

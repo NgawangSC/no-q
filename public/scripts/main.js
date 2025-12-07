@@ -1,4 +1,4 @@
-// Main JavaScript file for Q-Less application
+// Main JavaScript file for No-Q application
 
 // Add smooth scroll behavior
 document.documentElement.style.scrollBehavior = "smooth"
@@ -39,5 +39,5 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 // Add console message for developers
-console.log("%cQ-Less Healthcare Queue Management System", "color: #14B8A6; font-size: 20px; font-weight: bold;")
+console.log("%cNo-Q Healthcare Queue Management System", "color: #14B8A6; font-size: 20px; font-weight: bold;")
 console.log("%cBuilt with HTML, CSS, JavaScript, Express.js, and MongoDB", "color: #6b7280; font-size: 12px;")

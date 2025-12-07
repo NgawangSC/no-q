@@ -1,93 +1,342 @@
-# No-Q
+# No-Q - Queue Less Hospital System
 
+No-Q is a modern hospital queue management system that eliminates crowding and long physical waiting lines in hospitals.  
+It uses digital tokens, assigned chambers, and real-time updates so patients and staff can monitor queue status from any device.
 
+The project is built for the Secure Coding module and focuses on implementing robust security features in both backend and frontend.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Main Features
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### User Roles
 
-## Add your files
+1. **Patient** - Register, get tokens, and monitor queue status
+2. **Receptionist** - Register patients and manage queue assignments  
+3. **Doctor** - Manage patients in their assigned chamber
+4. **Admin** - System management and analytics
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### For Patients
+
+- Register with CID and basic details
+- Get a token number and assigned chamber
+- Check live status of their token
+- See current position in the queue
+- Get notified when called to the chamber
+- Simple and mobile-friendly interface
+
+### For Receptionists
+
+- Register new patients with CID and details
+- Select appropriate chamber for each patient
+- System generates the next token for that chamber
+- View recent registrations
+- Monitor queue for each chamber in real-time
+
+### For Doctors
+
+- Secure login with doctor account
+- View own profile with specialization and chamber assignment
+- See current patient for their chamber
+- View waiting queue list for their chamber only
+- Call next patient with one click
+- Mark current patient as completed
+- All updates happen in real-time via SSE
+
+### For Admin
+
+- Manage staff accounts (create, update, deactivate)
+- Create receptionists and doctors
+- Soft deactivate staff accounts with `is_active` flag
+- Manage medical specializations
+- Manage chambers and their status
+- Assign specialization and chamber to each doctor
+- View comprehensive analytics dashboard:
+  - Total patients for customizable time ranges
+  - Completed and cancelled appointment counts
+  - Average waiting time metrics
+  - Per-chamber performance statistics
+  - Per-doctor productivity statistics
+
+---
+
+## Tech Stack
+
+### Backend
+
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **PostgreSQL** - Database with `pg` client
+- **Bcrypt** - Password hashing
+- **JSON Web Tokens** - Authentication
+- **Server-Sent Events** - Real-time updates
+- **dotenv** - Environment variable management
+
+### Frontend
+
+- **Plain HTML/CSS/JavaScript** - No framework dependencies
+- **Separate pages** for each user role
+- **Fetch API** - Backend communication
+- **Local Storage** - JWT token persistence
+- **SSE** - Live queue and status updates
+
+---
+
+## Security Features
+
+This project is built for a Secure Coding course and implements comprehensive security measures:
+
+### Authentication & Authorization
+
+1. **Password Security**
+   - All staff passwords are hashed with bcrypt
+   - No plain text password storage
+   - Strong password policies enforced
+
+2. **JWT Authentication**
+   - Login returns a cryptographically signed JWT
+   - Token contains staff ID, CID, and role
+   - Configurable token expiry time
+   - Secure token storage in localStorage
+
+3. **Role-Based Access Control**
+   - `authenticateStaff` middleware validates JWT tokens
+   - `authorizeRole` middleware enforces role permissions
+   - Admin-only routes for staff management, specializations, chambers, and analytics
+   - Doctors can only access their own profiles
+
+### Data Protection
+
+4. **Soft Delete Implementation**
+   - Staff accounts deactivated with `is_active` flag
+   - Historical data and references preserved
+   - Audit trail maintained
+
+5. **Database Constraints**
+   - Unique CID constraint for staff
+   - Unique chamber numbers and specialization names
+   - Foreign key constraints from doctor profiles to staff, specializations, and chambers
+   - Data integrity enforced at database level
+
+6. **Route Protection**
+   - All admin and doctor routes require valid JWT
+   - Doctor profile access restricted to own profile only
+   - API endpoints protected with appropriate middleware
+   - Environment-based configuration management
+   - Secure session management
+
+---
+
+## Project Structure
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/sangayyoesel/no-q.git
-git branch -M main
-git push -uf origin main
+No-Q/
+├── server.js                 # Main Express server
+├── package.json              # Dependencies and scripts
+├── .env                      # Environment variables
+├── config/
+│   ├── database.js           # PostgreSQL connection
+│   └── jwt.js                # JWT helpers and middleware
+├── middleware/
+│   └── auth.js               # Authentication and role-based access
+├── models/
+│   ├── Staff.js              # Staff model and operations
+│   ├── Patient.js            # Patient model and operations
+│   ├── Queue.js              # Queue management model
+│   └── Analytics.js          # Analytics data model
+├── routes/
+│   ├── staff.js              # Staff authentication and management
+│   ├── patients.js           # Patient registration and queue operations
+│   ├── doctor.js             # Doctor profiles, specializations, chambers
+│   ├── queue.js              # Queue operations and SSE
+│   └── analytics.js          # Analytics API endpoints
+├── public/
+│   ├── index.html            # Landing page
+│   ├── patient-portal.html   # Patient registration and status
+│   ├── patient-status.html   # Token status display
+│   ├── staff-portal.html     # Staff login
+│   ├── receptionist-dashboard.html  # Receptionist interface
+│   ├── doctor-dashboard.html # Doctor queue management
+│   ├── admin-dashboard.html  # Admin main dashboard
+│   ├── staff-management.html # Staff CRUD operations
+│   ├── doctor-profile-management.html # Doctor profile assignment
+│   ├── specializations-management.html # Specialization CRUD
+│   ├── chambers-management.html # Chamber CRUD
+│   ├── analytics-dashboard.html # Analytics and reporting
+│   ├── scripts/
+│   │   ├── *.js              # Frontend logic for each page
+│   └── styles/
+│       └── *.css             # Styling and responsive design
+└── database/
+    └── schema.sql            # Database schema and initial data
 ```
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](https://gitlab.com/sangayyoesel/no-q/-/settings/integrations)
+## Installation and Setup
 
-## Collaborate with your team
+### Prerequisites
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+- Node.js (v14 or higher)
+- PostgreSQL (v12 or higher)
+- npm or yarn package manager
 
-## Test and Deploy
+### Environment Setup
 
-Use the built-in continuous integration in GitLab.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd No-Q
+   ```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-***
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials and JWT secret
+   ```
 
-# Editing this README
+4. **Database setup**
+   ```bash
+   # Create PostgreSQL database
+   createdb no_q_hospital
+   
+   # Run schema and initial data
+   psql -d no_q_hospital -f database/schema.sql
+   ```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+5. **Start the application**
+   ```bash
+   # Development mode
+   npm run dev
+   
+   # Production mode
+   npm start
+   ```
 
-## Suggestions for a good README
+### Environment Variables
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=no_q_hospital
+DB_USER=your_username
+DB_PASSWORD=your_password
 
-## Name
-Choose a self-explaining name for your project.
+# JWT Configuration
+JWT_SECRET=your_super_secret_jwt_key
+JWT_EXPIRES_IN=24h
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+---
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## API Endpoints
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Authentication
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- `POST /api/staff/login` - Staff login
+- `GET /api/staff` - Get all staff (admin only)
+- `POST /api/staff` - Create new staff (admin only)
+- `PUT /api/staff/:id` - Update staff (admin only)
+- `DELETE /api/staff/:id` - Deactivate staff (admin only)
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Patients & Queue
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- `POST /api/patients/register` - Register new patient
+- `GET /api/patients/token/:tokenNumber` - Get token status
+- `GET /api/queue/current?chamber={id}` - Get current patient and queue
+- `POST /api/queue/call-next` - Call next patient
+- `POST /api/queue/complete/:tokenNumber` - Complete patient
+- `GET /api/patients/updates` - SSE stream for real-time updates
+
+### Doctor Management
+
+- `GET /api/doctor/specializations` - Get all specializations
+- `POST /api/doctor/specializations` - Create specialization (admin)
+- `PUT /api/doctor/specializations/:id` - Update specialization (admin)
+- `DELETE /api/doctor/specializations/:id` - Delete specialization (admin)
+- `GET /api/doctor/chambers` - Get all chambers
+- `POST /api/doctor/chambers` - Create chamber (admin)
+- `PUT /api/doctor/chambers/:id` - Update chamber (admin)
+- `DELETE /api/doctor/chambers/:id` - Delete chamber (admin)
+- `GET /api/doctor/profile/:staffId` - Get doctor profile
+- `POST /api/doctor/profile` - Create doctor profile (admin)
+- `DELETE /api/doctor/profile/:staffId` - Delete doctor profile (admin)
+
+### Analytics
+
+- `GET /api/analytics?range={today|week|month}` - Get analytics data
+
+---
+
+## Usage Guide
+
+### For Patients
+
+1. Visit the patient portal URL
+2. Register with your CID number and basic details
+3. Receive your token number and chamber assignment
+4. Monitor your status on the status page or wait for notifications
+
+### For Staff
+
+1. Login using your CID and password
+2. Access your role-specific dashboard
+3. Perform your assigned tasks based on your role
+
+### For Admins
+
+1. Login with admin credentials
+2. Access the admin dashboard
+3. Manage staff, specializations, and chambers
+4. Monitor system performance through analytics
+
+---
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+---
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Security Considerations
+
+When contributing to this project, please ensure:
+
+- All user inputs are validated and sanitized
+- Database queries use parameterized statements
+- Sensitive data is properly encrypted
+- Authentication and authorization are properly implemented
+- Error messages don't leak sensitive information
+- Follow secure coding best practices
+
+---
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## Future Enhancements
+
+- SMS/Email notifications for patients
+- Mobile app for patients
+- Advanced analytics and reporting
+- Multi-hospital support
+- Integration with hospital management systems
+- Appointment scheduling system
+- Digital payment integration

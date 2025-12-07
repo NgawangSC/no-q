@@ -1,30 +1,27 @@
 const express = require("express")
-const mongoose = require("mongoose")
 const path = require("path")
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
 require("dotenv").config()
+const { connectDB } = require('./config/mongo')
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+  credentials: true
+}
+
 // Middleware
-app.use(cors())
+app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
 const sseClients = new Set()
-
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/qless"
-
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err))
 
 // Routes
 app.get("/", (req, res) => {
@@ -39,8 +36,8 @@ app.get("/staff", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "staff-portal.html"))
 })
 
-app.get("/staff-dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "staff-dashboard.html"))
+app.get("/admin-register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-register.html"))
 })
 
 app.get("/receptionist-dashboard", (req, res) => {
@@ -63,16 +60,24 @@ app.get("/patient-status", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "patient-status.html"))
 })
 
-app.get("/notifications", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "notifications.html"))
-})
-
-app.get("/analytics", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "analytics.html"))
-})
-
 app.get("/admin-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"))
+})
+
+app.get("/staff-management", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "staff-management.html"))
+})
+
+app.get("/specializations-management", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "specializations-management.html"))
+})
+
+app.get("/chambers-management", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "chambers-management.html"))
+})
+
+app.get("/doctor-profile-management", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "doctor-profile-management.html"))
 })
 
 app.get("/api/queue/stream", (req, res) => {
@@ -101,11 +106,27 @@ function broadcastQueueUpdate(data) {
 
 app.set("broadcastQueueUpdate", broadcastQueueUpdate)
 
-// API Routes (to be implemented)
+// MongoDB Connection
+if (process.env.MONGODB_URI) {
+  console.log("MongoDB URI detected, trying to connect...")
+  connectDB().catch((err) => {
+    console.error("MongoDB connection failed:", err)
+  })
+} else {
+  console.warn("MONGODB_URI not set. Skipping MongoDB connection.")
+}
+
+// Debug middleware to log all requests
+app.use("/api/doctor", (req, res, next) => {
+  console.log("📥 Incoming request to /api/doctor:", req.method, req.path)
+  next()
+})
+
+// API Routes
 app.use("/api/patients", require("./routes/patients"))
 app.use("/api/staff", require("./routes/staff"))
+app.use("/api/doctor", require("./routes/doctor"))
 app.use("/api/queue", require("./routes/queue"))
-app.use("/api/analytics", require("./routes/analytics"))
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -118,7 +139,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Q-Less server running on http://localhost:${PORT}`)
+  console.log(`No-Q server running on http://localhost:${PORT}`)
 })
 
 module.exports = app

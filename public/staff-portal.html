@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Portal - Q-Less</title>
+    <title>Staff Portal - No-Q</title>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/portal.css">
 </head>
@@ -22,7 +22,7 @@
                         <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
                         <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
                     </svg>
-                    <span class="logo-text">Q-Less</span>
+                    <span class="logo-text">No-Q</span>
                 </div>
             </div>
         </div>
@@ -53,6 +53,7 @@
                                 <option value="" disabled selected>Role</option>
                                 <option value="receptionist">Receptionist</option>
                                 <option value="doctor">Doctor</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
 
@@ -63,12 +64,10 @@
                                 id="cidNumber" 
                                 name="cidNumber" 
                                 class="form-input" 
-                                placeholder="Enter your CID"
+                                placeholder="Enter your CID number"
                                 required
-                            />
+                            >
                         </div>
-
-                        <!-- Removed email field to match design -->
 
                         <div class="form-group">
                             <label for="password" class="form-label">Password</label>
@@ -79,7 +78,7 @@
                                 class="form-input" 
                                 placeholder="Enter your password"
                                 required
-                            />
+                            >
                         </div>
 
                         <button type="submit" class="form-submit-button staff-submit">
@@ -93,7 +92,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+        <p class="footer-text"> 2025 No-Q. All Rights Reserved.</p>
     </footer>
 
     <script src="/scripts/staff-portal.js"></script>

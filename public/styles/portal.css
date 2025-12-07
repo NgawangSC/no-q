@@ -229,6 +229,63 @@
   line-height: 1.4;
 }
 
+/* Portal Messages */
+.portal-message-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 400px;
+}
+
+.portal-success-message,
+.portal-error-message {
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideInRight 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: white;
+  margin-bottom: 1rem;
+}
+
+.portal-success-message {
+  border-left: 4px solid #10b981;
+  color: #065f46;
+}
+
+.portal-error-message {
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+}
+
+.portal-message-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.portal-success-message .portal-message-icon {
+  color: #10b981;
+}
+
+.portal-error-message .portal-message-icon {
+  color: #ef4444;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 640px) {
   .portal-form-card {

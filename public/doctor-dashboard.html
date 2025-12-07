@@ -3,9 +3,646 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Dashboard - Q-Less</title>
+    <title>Doctor Dashboard - No-Q</title>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/dashboard.css">
+    <style>
+        /* Modern Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 24px;
+            margin: 24px auto;
+            padding: 0 16px;
+            max-width: 1600px;
+            min-height: calc(100vh - 150px);
+            align-items: start;
+        }
+        
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 280px 1fr 280px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        /* Card Base Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Profile Card Styles */
+        .profile-card {
+            padding: 0;
+            height: fit-content;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            padding: 28px 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .doctor-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .doctor-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .doctor-info p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        .profile-details {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .detail-content h4 {
+            margin: 0 0 4px 0;
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+        
+        .detail-content p {
+            margin: 0;
+            color: #1e293b;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        /* Current Patient Card */
+        .current-patient-card {
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+        }
+        
+        .current-patient-content {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .patient-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 24px 28px;
+            position: relative;
+        }
+        
+        .patient-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .patient-header h2 {
+            margin: 0 0 6px 0;
+            font-size: 22px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .patient-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .patient-content {
+            padding: 28px;
+        }
+        
+        .no-current-patient {
+            text-align: center;
+            padding: 48px 28px;
+            color: #64748b;
+        }
+        
+        .no-current-patient svg {
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        
+        .no-current-patient p {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .patient-details {
+            display: grid;
+            gap: 24px;
+        }
+        
+        .patient-token {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+        }
+        
+        .token-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #10b981;
+            line-height: 1;
+        }
+        
+        .patient-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        
+        .complaint-section {
+            grid-column: 1 / -1;
+        }
+        
+        .complaint-text {
+            margin-top: 8px;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
+            color: #475569;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        /* Prescription Section */
+        .prescription-section {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .prescription-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 140px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+        }
+        
+        .prescription-input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+        
+        .prescription-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        /* Action Buttons */
+        .patient-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Queue Card */
+        .queue-card {
+            padding: 0;
+            height: fit-content;
+        }
+        
+        .queue-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .queue-header h2 {
+            margin: 0 0 6px 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .queue-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        .queue-list {
+            max-height: 640px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        
+        .queue-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .queue-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .queue-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .queue-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .queue-item {
+            margin: 8px;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .queue-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #e2e8f0;
+            transition: background-color 0.2s ease;
+        }
+        
+        .queue-item:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .queue-item.current-patient::before {
+            background: #10b981;
+        }
+        
+        .queue-token {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .queue-item.current-patient .queue-token {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .queue-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .queue-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .queue-complaint {
+            color: #64748b;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+        
+        .queue-time {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        
+        .status-waiting {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        
+        .status-checking {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border: 1px solid #60a5fa;
+        }
+        
+        .status-called {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border: 1px solid #60a5fa;
+        }
+        
+        .empty-queue {
+            text-align: center;
+            padding: 48px 28px;
+            color: #64748b;
+        }
+        
+        .empty-queue svg {
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        
+        .empty-queue p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* No Profile Message */
+        .no-profile-message {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .no-profile-message h3 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .no-profile-message p {
+            margin: 0;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 280px minmax(450px, 1fr) 340px;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                gap: 16px;
+            }
+            
+            .patient-info-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .patient-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -22,15 +659,15 @@
                         <path d="M25 5L45 15V35L25 45L5 35V15L25 5Z" fill="#0D9488"/>
                         <path d="M25 15L35 20V30L25 35L15 30V20L25 15Z" fill="#14B8A6"/>
                     </svg>
-                    <span class="logo-text">Q-Less</span>
+                    <span class="logo-text">No-Q</span>
                 </div>
                 <div class="header-actions">
-                    <button id="logoutBtn" class="logout-btn">
+                    <button id="logoutBtn" class="logout-btn" type="button">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button id="refreshBtn" class="refresh-btn">
+                    <button id="refreshBtn" class="refresh-btn" type="button">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 2V8M21 8H15M21 8L18 5.5C16.5 4 14.5 3 12 3C7 3 3 7 3 12C3 17 7 21 12 21C16 21 19.5 18.5 21 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -43,116 +680,133 @@
     <!-- Main Content -->
     <main class="dashboard-main">
         <div class="container">
-            <!-- Current Token Card -->
-            <div class="current-token-card">
-                <!-- Blue Header -->
-                <div class="token-header">
-                    <h1 class="token-title">Clear Current Token</h1>
-                    <p class="token-subtitle">Mark the current patient as completed and advance the queue</p>
-                    <div class="token-number-display">
-                        <span class="token-label">Token Number:</span>
-                        <span id="currentToken" class="token-value">-</span>
-                    </div>
-                </div>
-
-                <!-- Patient Information -->
-                <div id="patientInfo" class="patient-info-section">
-                    <h2 class="info-section-title">Your Information</h2>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">NAME</span>
-                            <span id="patientName" class="info-value">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">CID</span>
-                            <span id="patientCID" class="info-value">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">DOB</span>
-                            <span id="patientDOB" class="info-value">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">AGE</span>
-                            <span id="patientAge" class="info-value">-</span>
-                        </div>
-                        <div class="info-item full-width">
-                            <span class="info-label">CHIEF COMPLAINT</span>
-                            <span id="patientComplaint" class="info-value">-</span>
-                        </div>
-                    </div>
-                    <button id="clearTokenBtn" class="clear-token-button">Clear Token</button>
-                </div>
-
-                <!-- No Patient State -->
-                <div id="noPatient" class="no-patient-state" style="display: none;">
-                    <p class="no-patient-text">No patient currently assigned</p>
-                </div>
+            <!-- No Profile Message -->
+            <div id="noProfileMessage" class="no-profile-message" style="display: none;">
+                <h3>Profile Not Configured</h3>
+                <p>Your admin has not assigned a specialization or chamber. Please contact administration.</p>
             </div>
 
-            <!-- Queue Overview -->
-            <div class="queue-overview">
-                <h2 class="overview-title">Queue Overview</h2>
-                <p class="overview-subtitle">Current status of your chamber</p>
-                <div class="overview-grid">
-                    <div class="overview-card">
-                        <div class="overview-icon location-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="overview-content">
-                            <span class="overview-label">Location</span>
-                            <span id="chamberLocation" class="overview-value">Chamber No: -</span>
-                        </div>
-                    </div>
-
-                    <div class="overview-card">
-                        <div class="overview-icon time-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <div class="overview-content">
-                            <span class="overview-label">Expected Time</span>
-                            <span id="expectedTime" class="overview-value">- Minutes</span>
-                        </div>
-                    </div>
-
-                    <div class="overview-card">
-                        <div class="overview-icon token-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-                                <path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="overview-content">
-                            <span class="overview-label">Token</span>
-                            <span id="tokenNo" class="overview-value">Token No: -</span>
-                        </div>
-                    </div>
-
-                    <div class="overview-card">
-                        <div class="overview-icon waiting-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="overview-content">
-                            <span class="overview-label">Waiting</span>
-                            <span id="waitingCount" class="overview-value">- people</span>
+            <!-- Dashboard Grid -->
+            <div id="dashboardGrid" class="dashboard-grid" style="display: none;">
+                <!-- Doctor Profile Section (Left) -->
+                <div class="profile-card card">
+                    <div class="profile-header">
+                        <div class="doctor-avatar" id="doctorAvatar">D</div>
+                        <div class="doctor-info">
+                            <h3 id="doctorName">Loading...</h3>
+                            <p id="doctorSpecialization" style="font-size: 15px; margin-bottom: 4px;">Loading...</p>
+                            <p id="doctorEmail" style="font-size: 13px; opacity: 0.9;">-</p>
+                            <p id="chamberInfo" style="font-size: 13px; opacity: 0.9;">-</p>
+                            <p id="chamberLocation" style="font-size: 12px; opacity: 0.8;">-</p>
                         </div>
                     </div>
                 </div>
-                <p id="lastUpdated" class="last-updated">Last Updated 9:15 a.m</p>
+
+                <!-- Current Patient Section (Center) -->
+                <div class="current-patient-card card">
+                    <div class="patient-header">
+                        <h2>Current Patient</h2>
+                        <p>Patient currently being attended</p>
+                    </div>
+                    <div class="current-patient-content">
+                        <div id="noCurrentPatient" class="no-current-patient">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 16px;">
+                                <path d="M20 21V19a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p>No patient currently assigned</p>
+                            <button id="callNextBtn" class="btn btn-primary" style="margin-top: 16px;">
+                                <span id="callNextText">Call Next Patient</span>
+                                <span id="callNextSpinner" class="loading-spinner" style="display: none;"></span>
+                            </button>
+                        </div>
+
+                        <div id="currentPatientDetails" class="patient-details" style="display: none;">
+                            <div class="patient-token">
+                                <div class="token-number" id="currentToken">-</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #1e293b;">Current Token</div>
+                                    <div style="font-size: 12px; color: #64748b;" id="enteredTime">-</div>
+                                </div>
+                            </div>
+
+                            <div class="patient-info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Patient Name</span>
+                                    <span class="info-value" id="patientName">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">CID Number</span>
+                                    <span class="info-value" id="patientCID">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Age</span>
+                                    <span class="info-value" id="patientAge">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Gender</span>
+                                    <span class="info-value" id="patientGender">-</span>
+                                </div>
+                                <div class="complaint-section">
+                                    <div class="info-item">
+                                        <div class="info-label">Chief Complaint</div>
+                                        <div class="info-value" id="patientComplaint">-</div>
+                                    </div>
+                                </div>
+
+                                <!-- Prescription Section -->
+                                <div class="prescription-section">
+                                    <div class="info-item">
+                                        <div class="info-label">Prescription</div>
+                                        <textarea 
+                                            id="prescriptionInput" 
+                                            class="prescription-input" 
+                                            placeholder="Enter prescription details..."
+                                            rows="6"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="patient-actions" style="margin-top: auto; padding-top: 20px;">
+                                <button id="completePatientBtn" class="btn btn-secondary" type="button">
+                                    <span id="completeText">Complete</span>
+                                    <span id="completeSpinner" class="loading-spinner" style="display: none;"></span>
+                                </button>
+                                <button id="callNextFromCurrentBtn" class="btn btn-primary" type="button">
+                                    <span id="callNextFromCurrentText">Call Next</span>
+                                    <span id="callNextFromCurrentSpinner" class="loading-spinner" style="display: none;"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue List Section (Right) -->
+                <div class="queue-card card">
+                    <div class="queue-header">
+                        <h2>Queue List</h2>
+                        <p>Waiting patients for your chamber</p>
+                    </div>
+                    <div class="queue-list">
+                        <div id="queueLoading" class="loading" style="padding: 40px; text-align: center;">
+                            <div class="loading-spinner" style="width: 24px; height: 24px; margin: 0 auto 12px;"></div>
+                            <p>Loading queue...</p>
+                        </div>
+                        <div id="queueList" style="display: none;"></div>
+                        <div id="emptyQueue" class="empty-queue" style="display: none;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 16px;">
+                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p>No patients in queue</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2025 Q-Less. All Rights Reserved.</p>
+        <p class="footer-text"> 2025 No-Q. All Rights Reserved.</p>
     </footer>
 
     <script src="/scripts/doctor-dashboard.js"></script>

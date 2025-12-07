@@ -1,6 +1,9 @@
 // create-admin.js
 
-require('dotenv').config()
+// Only load dotenv if not in production
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const { connectDB, mongoose } = require('./config/mongo')
 const { Staff } = require('./models/mongo/Staff')
 

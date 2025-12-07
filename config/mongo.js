@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
 
-// MongoDB connection string from environment variable
-const MONGODB_URI = process.env.MONGODB_URI;
-
-// Skip MongoDB connection if URI is not provided
-if (!MONGODB_URI) {
-  console.warn('MONGODB_URI is not set. MongoDB connection will be skipped.');
-  module.exports = { connectDB: () => {}, mongoose };
-  return;
+// MongoDB connection string from environment variable (lazy access)
+function getMongoUri() {
+  return process.env.MONGODB_URI;
 }
 
 // Configure Mongoose to use the latest server discovery and monitoring engine
@@ -29,6 +24,13 @@ mongoose.connection.on('disconnected', () => {
 // Connect to MongoDB
 async function connectDB() {
   try {
+    const MONGODB_URI = getMongoUri();
+    
+    if (!MONGODB_URI) {
+      console.warn('MONGODB_URI is not set. MongoDB connection will be skipped.');
+      return null;
+    }
+    
     console.log("Connecting to MongoDB...");
 
     const conn = await mongoose.connect(MONGODB_URI, {

@@ -68,7 +68,12 @@ router.post("/login", async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    console.error("Login error:", error)
+    // Don't expose sensitive error details in production
+    const errorMessage = process.env.NODE_ENV === 'production' 
+      ? "An error occurred during login. Please try again."
+      : error.message
+    res.status(500).json({ error: errorMessage })
   }
 })
 
@@ -134,62 +139,22 @@ router.get("/", authenticateStaff, authorizeRole('admin'), async (req, res) => {
 router.get("/:id", authenticateStaff, authorizeRole('admin'), async (req, res) => {
   try {
     const { id } = req.params
-    console.log("==== GET /api/staff/:id ====")
-    console.log("Requested ID:", id, "Type:", typeof id, "Length:", id?.length)
-    console.log("Authenticated user:", req.user ? { id: req.user.id, role: req.user.role } : "None")
     
-    // Try to find staff - mongoose.isValid can be lenient, so try the query even if validation fails
-    let staff = null
-    let isValidFormat = mongoose.Types.ObjectId.isValid(id)
-    
-    if (isValidFormat) {
-      staff = await findById(id)
-    } else {
-      console.warn("ObjectId validation failed, but trying query anyway. ID:", id)
-      // Try anyway - sometimes IDs can be valid even if isValid returns false
-      try {
-        staff = await findById(id)
-      } catch (err) {
-        console.error("Error querying with invalid format:", err)
-      }
+    // Validate MongoDB ObjectId format using mongoose
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        error: "Invalid staff ID format",
+        message: "Staff ID must be a valid MongoDB ObjectId"
+      })
     }
     
-    console.log("Found staff:", staff ? "Yes" : "No")
+    const staff = await findById(id)
     
     if (!staff) {
-      // Get all staff to see what IDs exist (for debugging)
-      const allStaff = await findAll()
-      const allIds = allStaff.map(s => String(s._id))
-      const allIdsLengths = allIds.map(sid => ({ id: sid, length: sid.length }))
-      console.log("Available staff IDs:", allIds)
-      console.log("ID lengths:", allIdsLengths)
-      console.log("Requested ID:", id, "Length:", id?.length)
-      
-      // Try to find a matching ID (in case of truncation or formatting issues)
-      const matchingId = allIds.find(sid => sid === id || sid.startsWith(id) || id.startsWith(sid))
-      if (matchingId && matchingId !== id) {
-        console.log("Found partial match:", matchingId, "for requested:", id)
-        try {
-          staff = await findById(matchingId)
-        } catch (err) {
-          console.error("Error querying with matched ID:", err)
-        }
-      }
-      
-      if (!staff) {
-        // Check if it's an authentication issue by checking req.user
-        console.log("Request user:", req.user ? { id: req.user.id, role: req.user.role } : "Not authenticated")
-        
-        return res.status(404).json({ 
-          error: "Staff not found",
-          message: `No staff member found with ID: ${id}`,
-          receivedId: id,
-          receivedIdLength: id?.length,
-          isValidFormat: isValidFormat,
-          availableIdsCount: allIds.length,
-          availableIds: allIds.slice(0, 5) // Only return first 5 to avoid huge response
-        })
-      }
+      return res.status(404).json({ 
+        error: "Staff not found",
+        message: `No staff member found with ID: ${id}`
+      })
     }
     
     // Remove password field from response

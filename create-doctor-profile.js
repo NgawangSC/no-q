@@ -4,7 +4,10 @@
 // 2. Ensure MONGODB_URI is set in your .env file.
 // 3. Run: npm run create-doctor-profile
 
-require('dotenv').config()
+// Only load dotenv if not in production
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const { connectDB, mongoose } = require('./config/mongo')
 const { Staff } = require('./models/mongo/Staff')
 const {

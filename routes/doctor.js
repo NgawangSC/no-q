@@ -2,14 +2,6 @@ const express = require("express")
 const router = express.Router()
 const { authenticateStaff, authorizeRole } = require("../middleware/auth")
 
-// Debug middleware to log all requests to doctor router
-router.use((req, res, next) => {
-  if (req.method === "DELETE") {
-    console.log("🗑️ DELETE request to doctor router:", req.method, req.path, "Original:", req.originalUrl)
-  }
-  next()
-})
-
 const {
   Specialization,
   findAllSpecializations,
@@ -793,35 +785,22 @@ router.delete(
   async (req, res) => {
     try {
       const { staffId } = req.params
-      console.log("==== DELETE /api/doctor/delete/:staffId ====")
-      console.log("Requested staffId:", staffId, "Length:", staffId?.length)
-      console.log("Authenticated user:", req.user ? { id: req.user.id, role: req.user.role } : "None")
 
       // Validate ObjectId format
       const mongoose = require("mongoose")
       if (!mongoose.Types.ObjectId.isValid(staffId)) {
         return res.status(400).json({ 
-          error: "Invalid staff ID format",
-          receivedId: staffId
+          error: "Invalid staff ID format"
         })
       }
 
       // Check if staff exists and is a doctor
       const staff = await findStaffById(staffId)
-      console.log("Found staff:", staff ? { id: String(staff._id), role: staff.role } : "No")
       
       if (!staff) {
-        // Get all staff for debugging
-        const { findAll } = require('../models/mongo/Staff')
-        const allStaff = await findAll()
-        const allIds = allStaff.map(s => String(s._id))
-        console.log("Available staff IDs:", allIds)
-        
         return res.status(404).json({ 
           error: "Staff not found",
-          message: `No staff member found with ID: ${staffId}`,
-          receivedId: staffId,
-          availableIdsCount: allIds.length
+          message: `No staff member found with ID: ${staffId}`
         })
       }
 
@@ -833,13 +812,10 @@ router.delete(
       }
 
       // Delete doctor profile if it exists
-      const profileDeleted = await DoctorProfile.findOneAndDelete({ staff_id: staffId })
-      console.log("Doctor profile deleted:", profileDeleted ? "Yes" : "No profile found")
+      await DoctorProfile.findOneAndDelete({ staff_id: staffId })
 
       // Permanently delete staff record
-      const { permanentDelete } = require('../models/mongo/Staff')
       await permanentDelete(staffId)
-      console.log("Staff record permanently deleted")
 
       return res.json({ 
         success: true,

@@ -2,7 +2,12 @@ const express = require("express")
 const path = require("path")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
-require("dotenv").config()
+
+// Only load dotenv in development (Railway provides env vars in production)
+if (process.env.NODE_ENV !== 'production') {
+  require("dotenv").config()
+}
+
 const { connectDB } = require('./config/mongo')
 
 const app = express()
@@ -106,21 +111,26 @@ function broadcastQueueUpdate(data) {
 
 app.set("broadcastQueueUpdate", broadcastQueueUpdate)
 
-// MongoDB Connection
-if (process.env.MONGODB_URI) {
-  console.log("MongoDB URI detected, trying to connect...")
-  connectDB().catch((err) => {
-    console.error("MongoDB connection failed:", err)
-  })
-} else {
-  console.warn("MONGODB_URI not set. Skipping MongoDB connection.")
-}
+// Validate required environment variables (only at runtime, not during build)
+// This check only runs when the server actually starts, not during build
+if (typeof process !== 'undefined' && process.env) {
+  if (!process.env.JWT_SECRET) {
+    console.error("⚠️  WARNING: JWT_SECRET is not set! Authentication will fail.")
+    console.error("   Please set JWT_SECRET in your environment variables.")
+  }
 
-// Debug middleware to log all requests
-app.use("/api/doctor", (req, res, next) => {
-  console.log("📥 Incoming request to /api/doctor:", req.method, req.path)
-  next()
-})
+  // MongoDB Connection
+  if (process.env.MONGODB_URI) {
+    console.log("MongoDB URI detected, trying to connect...")
+    connectDB().catch((err) => {
+      console.error("❌ MongoDB connection failed:", err.message)
+      console.error("   Please check your MONGODB_URI environment variable.")
+    })
+  } else {
+    console.warn("⚠️  WARNING: MONGODB_URI not set. Skipping MongoDB connection.")
+    console.warn("   Database operations will fail. Please set MONGODB_URI.")
+  }
+}
 
 // API Routes
 app.use("/api/patients", require("./routes/patients"))

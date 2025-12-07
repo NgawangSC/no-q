@@ -62,16 +62,6 @@
         return
       }
 
-      // Debug: Log all staff IDs and roles to help diagnose issues
-      console.log("Loaded staff IDs:", staff.map(s => ({
-        name: s.name,
-        role: s.role,
-        roleType: typeof s.role,
-        _id: s._id,
-        id: s.id,
-        _idType: typeof s._id,
-        _idLength: s._id ? String(s._id).length : 0
-      })))
 
       staff.forEach((s) => {
         const card = document.createElement("div")
@@ -391,8 +381,6 @@
     const normalizedRole = role ? String(role).toLowerCase().trim() : ""
     const roleLabel = normalizedRole ? normalizedRole.charAt(0).toUpperCase() + normalizedRole.slice(1) : "Staff"
     const isDoctor = normalizedRole === "doctor"
-    
-    console.log("deleteStaff called:", { staffId, name: decodedName, role, normalizedRole, isDoctor })
 
     // Different confirmation messages for doctors vs other staff
     let confirmMessage

@@ -14,10 +14,35 @@ const {
 const { generateToken } = require("../config/jwt")
 const { authenticateStaff, authorizeRole } = require("../middleware/auth")
 
+// Debug endpoint to check server configuration
+router.get("/health", async (req, res) => {
+  const health = {
+    status: "ok",
+    jwt_secret_set: !!process.env.JWT_SECRET,
+    mongodb_uri_set: !!process.env.MONGODB_URI,
+    node_env: process.env.NODE_ENV,
+    port: process.env.PORT
+  }
+  res.json(health)
+})
+
 // Staff login
 router.post("/login", async (req, res) => {
   try {
+    // Validate JWT_SECRET before proceeding
+    if (!process.env.JWT_SECRET) {
+      console.error("CRITICAL: JWT_SECRET is not set!")
+      return res.status(500).json({ 
+        error: "Server configuration error",
+        message: "JWT_SECRET is not configured. Please contact administrator."
+      })
+    }
+
     const { cidNumber, password, role } = req.body
+
+    if (!cidNumber || !password) {
+      return res.status(400).json({ message: "CID and password are required" })
+    }
 
     // Find staff by CID (username)
     const staff = await findByUsername(cidNumber)
@@ -69,6 +94,17 @@ router.post("/login", async (req, res) => {
     })
   } catch (error) {
     console.error("Login error:", error)
+    console.error("Error stack:", error.stack)
+    
+    // Check for specific error types
+    if (error.message && error.message.includes('JWT_SECRET')) {
+      console.error("CRITICAL: JWT_SECRET is not set!")
+      return res.status(500).json({ 
+        error: "Server configuration error. Please contact administrator.",
+        message: "JWT_SECRET is not configured"
+      })
+    }
+    
     // Don't expose sensitive error details in production
     const errorMessage = process.env.NODE_ENV === 'production' 
       ? "An error occurred during login. Please try again."
